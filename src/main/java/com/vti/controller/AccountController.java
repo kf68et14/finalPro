@@ -2,6 +2,8 @@ package com.vti.controller;
 
 import java.util.List;
 
+import com.vti.form.AccountRequestFormForCreate;
+import com.vti.form.AccountRequestFormForUpdate;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,30 @@ public class AccountController {
 
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
+	// Create account
+	@PostMapping
+	public ResponseEntity<?> createAccount(@RequestBody AccountRequestFormForCreate form) {
+		service.createGroup(form);
+		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
+	}
 
-	@PostMapping("/account")
-	public ResponseEntity
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getAccountByID(@PathVariable(name = "id") int id) {
+		return new ResponseEntity<>(service.getAccountByID(id), HttpStatus.OK);
+	}
+
+	// update by id
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id, @RequestBody AccountRequestFormForUpdate form) {
+		service.updateAccount(id, form);
+		return new ResponseEntity<String>("Update successfully!", HttpStatus.OK);
+	}
+
+	// delete nhieu account
+	@DeleteMapping(value = "/{ids}")
+	public ResponseEntity<?> deleteAccounts(@PathVariable(name = "ids") List<Integer> ids) {
+		service.deleteAccounts(ids);
+		return new ResponseEntity<String>("Delete successfully!", HttpStatus.OK);
+	}
 
 }

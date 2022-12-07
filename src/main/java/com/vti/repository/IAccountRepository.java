@@ -5,5 +5,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.vti.entity.Account;
 
+import java.util.List;
+
 public interface IAccountRepository extends JpaRepository<Account, Integer>, JpaSpecificationExecutor<Account> {
+    void deleteByIdIn(List<Integer> ids);
 }
