@@ -1,5 +1,6 @@
 package com.vti.form;
 
+import com.vti.entity.Account;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountFilterForm {
 
-	private Integer minId;
+	private Account role;
 
-	private Integer maxId;
+	private Account department;
 
 }
 

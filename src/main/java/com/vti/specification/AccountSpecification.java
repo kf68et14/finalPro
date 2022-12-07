@@ -24,14 +24,20 @@ public class AccountSpecification implements Specification<Account> {
 
         if (!StringUtils.isEmpty(search)) {
             search = search.trim();
-            CustomSpecification role = new CustomSpecification("role", search);
-            where = Specification.where(role);
+            CustomSpecification username = new CustomSpecification("username", search);
+            where = Specification.where(username);
         }
 
         if (!StringUtils.isEmpty(search)) {
             search = search.trim();
-            CustomSpecification department = new CustomSpecification("department", search);
-            where = where.or(department);
+            CustomSpecification firstName = new CustomSpecification("firstName", search);
+            where = where.and(firstName);
+        }
+
+        if (!StringUtils.isEmpty(search)) {
+            search = search.trim();
+            CustomSpecification lastName = new CustomSpecification("lastName", search);
+            where = where.and(lastName);
         }
         return where;
     }
@@ -52,13 +58,18 @@ class CustomSpecification implements Specification<Account> {
             CriteriaQuery<?> query,
             CriteriaBuilder criteriaBuilder) {
 
-        if (field.equalsIgnoreCase("role")) {
-            return criteriaBuilder.like(root.get("role"), "%" + value.toString() + "%");
+        if (field.equalsIgnoreCase("username")) {
+            return criteriaBuilder.like(root.get("username"), "%" + value.toString() + "%");
         }
 
-        if (field.equalsIgnoreCase("department")) {
-            return criteriaBuilder.like(root.get("department"), "%" + value.toString() + "%");
+        if (field.equalsIgnoreCase("firstName")) {
+            return criteriaBuilder.like(root.get("firstName"), "%" + value.toString() + "%");
         }
+
+        if (field.equalsIgnoreCase("lastName")) {
+            return criteriaBuilder.like(root.get("lastName"), "%" + value.toString() + "%");
+        }
+
         return null;
     }
 }
