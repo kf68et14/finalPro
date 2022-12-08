@@ -13,11 +13,11 @@ import java.util.List;
 public interface IAccountService {
     Page<Account> getAllAccounts(String search, Pageable page, AccountFilterForm filterForm);
 
-    void createGroup(AccountRequestFormForCreate form);
-
     Account getAccountByID(int id);
 
     void updateAccount(int id, AccountRequestFormForUpdate form);
 
     void deleteAccounts(List<Integer> ids);
+
+    void createAccount(AccountRequestFormForCreate form);
 }

@@ -34,13 +34,13 @@ public class Account implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "UserName", length = 50, nullable = false, unique = true, updatable = false)
+	@Column(name = "UserName", length = 50, nullable = false, unique = false)
 	private String username;
 	
-	@Column(name = "FirstName")
+	@Column(name = "FirstName", length = 50, nullable = false)
 	private String firstName;
 	
-	@Column(name = "LastName")
+	@Column(name = "LastName", length = 50, nullable = false)
 	private String lastName;
 	
 	@Column(name = "Password")

@@ -28,7 +28,7 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public void createGroup(AccountRequestFormForCreate form) {
+	public void createAccount(AccountRequestFormForCreate form) {
 		repository.save(form.toEntity());
 	}
 	@Override

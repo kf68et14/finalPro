@@ -18,6 +18,8 @@ import com.vti.entity.Account;
 import com.vti.form.AccountFilterForm;
 import com.vti.service.IAccountService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "api/v1/accounts")
 public class AccountController {
@@ -41,8 +43,8 @@ public class AccountController {
 	}
 	// Create account
 	@PostMapping
-	public ResponseEntity<?> createAccount(@RequestBody AccountRequestFormForCreate form) {
-		service.createGroup(form);
+	public ResponseEntity<?> createAccount(@RequestBody @Valid AccountRequestFormForCreate form) {
+		service.createAccount(form);
 		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
 	}
 
@@ -53,7 +55,7 @@ public class AccountController {
 
 	// update by id
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id, @RequestBody AccountRequestFormForUpdate form) {
+	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id, @RequestBody @Valid AccountRequestFormForUpdate form) {
 		service.updateAccount(id, form);
 		return new ResponseEntity<String>("Update successfully!", HttpStatus.OK);
 	}
