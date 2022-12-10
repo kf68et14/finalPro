@@ -16,6 +16,7 @@ import com.vti.entity.Department;
 import com.vti.repository.IDepartmentRepository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class DepartmentService implements IDepartmentService {
@@ -41,9 +42,12 @@ public class DepartmentService implements IDepartmentService {
 
 	@Override
 	public void updateDepartment(int id, DepartmentRequestFormForUpdate form) {
-		Department department = repository.findById(id).get();
-		department.setName(form.getName());
-		department.setType(form.getType());
+		Optional<Department> department = repository.findById(id);
+		if (department.isPresent()){
+			department.get().setName(form.getName());
+			department.get().setType(form.getType());
+		}
+		repository.save(department.get());
 	}
 
 	@Override

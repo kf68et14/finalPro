@@ -56,14 +56,14 @@ public class DepartmentController {
 
 	@PutMapping(value = "/{id}")
 	// update department
-	public ResponseEntity<?> updateDepartment(@RequestParam int id,@RequestBody @Valid DepartmentRequestFormForUpdate form){
+	public ResponseEntity<?> updateDepartment(@PathVariable int id,@RequestBody @Valid DepartmentRequestFormForUpdate form){
 		service.updateDepartment(id, form);
 		return new ResponseEntity<String>("update successfully", HttpStatus.ACCEPTED);
 	}
 
 	// delete
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<?> deleteDepartment(@RequestParam int id){
+	public ResponseEntity<?> deleteDepartment(@PathVariable int id){
 		service.deleteDepartment(id);
 		return new ResponseEntity<String>("delete successfully", HttpStatus.ACCEPTED);
 	}

@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AccountService implements IAccountService {
@@ -31,6 +35,22 @@ public class AccountService implements IAccountService {
 	public void createAccount(AccountRequestFormForCreate form) {
 		repository.save(form.toEntity());
 	}
+
+	@Override
+	public void updateAccountPartially(int id, Map<String, Object> fields) {
+		Optional<Account> account = repository.findById(id);
+		
+		if(account.isPresent()){
+			fields.forEach((key, value)-> {
+				Field field = ReflectionUtils.findField(Account.class, key);
+				field.setAccessible(true);
+				ReflectionUtils.setField(field, account.get(), value);
+			});
+		}
+
+		repository.save(account.get());
+	}
+
 	@Override
 	public Account getAccountById(int id){
 		return repository.findById(id).get();

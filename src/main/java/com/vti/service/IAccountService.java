@@ -9,6 +9,7 @@ import com.vti.entity.Account;
 import com.vti.form.AccountFilterForm;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IAccountService {
     Page<Account> getAllAccounts(String search, Pageable page, AccountFilterForm filterForm);
@@ -16,8 +17,11 @@ public interface IAccountService {
     Account getAccountByID(int id);
 
     void updateAccount(int id, AccountRequestFormForUpdate form);
+    void updateAccountPartially(int id, Map<String, Object> fields);
 
     void deleteAccounts(List<Integer> ids);
 
     void createAccount(AccountRequestFormForCreate form);
+
+
 }

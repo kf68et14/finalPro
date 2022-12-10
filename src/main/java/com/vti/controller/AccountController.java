@@ -1,6 +1,7 @@
 package com.vti.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
@@ -58,6 +59,14 @@ public class AccountController {
 	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id, @RequestBody @Valid AccountRequestFormForUpdate form) {
 		service.updateAccount(id, form);
 		return new ResponseEntity<String>("Update successfully!", HttpStatus.OK);
+	}
+
+	// update partial information
+	@PatchMapping(value = "/{id}")
+	public ResponseEntity<?> updateAccountPartially (@PathVariable(name = "id") int id,
+													 Map<String, Object> fields){
+		service.updateAccountPartially(id, fields);
+		return new ResponseEntity<String>("update successfully", HttpStatus.OK);
 	}
 
 	// delete nhieu account
