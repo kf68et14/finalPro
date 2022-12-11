@@ -24,7 +24,6 @@ public class AccountService implements IAccountService {
 	@Autowired
 	private IAccountRepository repository;
 
-	@Override
 	public Page<Account> getAllAccounts(String search, Pageable pageable, AccountFilterForm filterForm) {
 		AccountSpecificationBuilder specification = new AccountSpecificationBuilder(filterForm, search);
 
@@ -32,11 +31,14 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
+	public Account getAccountByID(int id) {
+		return repository.findById(id).get();
+	}
+
 	public void createAccount(AccountRequestFormForCreate form) {
 		repository.save(form.toEntity());
 	}
 
-	@Override
 	public void updateAccountPartially(int id, Map<String, Object> fields) {
 		Optional<Account> account = repository.findById(id);
 		
@@ -51,29 +53,23 @@ public class AccountService implements IAccountService {
 		repository.save(account.get());
 	}
 
-	@Override
-	public Account getAccountById(int id){
-		return repository.findById(id).get();
-	}
-
 	public void updateAccount(int id, AccountRequestFormForUpdate form){
-		Account account = repository.findById().get();
+		Optional<Account> account = repository.findById(id);
 
-		account.setUsername(form.getUsername());
-		account.setFirstName(form.getFirstName());
-		account.setLastName(form.getLastName());
-		account.setRole(form.getRole());
-		account.setDepartment(form.getDepartment());
-
-		repository.save(account);
+		if(account.isPresent()){
+			account.get().setUsername(form.getUsername());
+			account.get().setFirstName(form.getFirstName());
+			account.get().setLastName(form.getLastName());
+			account.get().setRole(form.getRole());
+			account.get().setDepartment(form.getDepartment());
+		}
+		repository.save(account.get());
 	}
 
 	@Transactional
 	public void deleteAccounts(List<Integer> ids){
 		repository.deleteByIdIn(ids);
 	}
-
-
 
 }
 

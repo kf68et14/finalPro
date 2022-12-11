@@ -19,20 +19,20 @@ public class DepartmentSpecificationBuilder {
     @SuppressWarnings("deprecation")
     public Specification<Department> build() {
 
-        SearchCriteria searchCriteria = new SearchCriteria("name","Like", search);
+        SearchCriteria searchName = new SearchCriteria("name","Like", search);
 
         SearchCriteria minCreatedDateCriteria = new SearchCriteria("createdDate", ">=", filter.getMin_created_date());
         SearchCriteria maxCreatedDateCriteria = new SearchCriteria("createdDate", "<=", filter.getMax_created_date());
 
         Specification<Department> where = null;
 
-        // search
         if (!StringUtils.isEmpty(search)) {
-            where = new DepartmentSpecification(searchCriteria);
+            search = search.trim();
+            where = new DepartmentSpecification(searchName);
         }
 
         // filer by create Date
-        if (filter.getMin_created_date() != 0){
+        if (filter.getMin_created_date() != null){
             if(where != null){
                 where = where.and(new DepartmentSpecification(minCreatedDateCriteria));
             } else {
@@ -40,11 +40,11 @@ public class DepartmentSpecificationBuilder {
             }
         }
 
-        if (filter.getMax_created_date() != 0){
+        if (filter.getMax_created_date() != null){
             if(where != null){
                 where = where.and(new DepartmentSpecification(maxCreatedDateCriteria));
             } else {
-                where = new AccountSpecification(maxCreatedDateCriteria);
+                where = new DepartmentSpecification(maxCreatedDateCriteria);
             }
         }
 

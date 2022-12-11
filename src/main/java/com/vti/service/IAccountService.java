@@ -22,6 +22,4 @@ public interface IAccountService {
     void deleteAccounts(List<Integer> ids);
 
     void createAccount(AccountRequestFormForCreate form);
-
-
 }

@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "`Account`")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -58,5 +60,13 @@ public class Account implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date createdDate;
+
+	public Account(String username, String firstName, String lastName, Role role, Department department){
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+		this.department = department;
+	}
 	
 }

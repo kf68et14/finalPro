@@ -19,7 +19,9 @@ public class AccountSpecificationBuilder {
     @SuppressWarnings("deprecation")
     public Specification<Account> build() {
 
-        SearchCriteria searchCriteria = new SearchCriteria("username","Like", search);
+        SearchCriteria searchName = new SearchCriteria("username","Like", search);
+        SearchCriteria searchFirstName = new SearchCriteria("firstname","Like", search);
+        SearchCriteria searchLastName = new SearchCriteria("lastname","Like", search);
 
         SearchCriteria getRoleCriteria = new SearchCriteria("role", "Equals", filter.getRole());
         SearchCriteria getDepartmentCriteria = new SearchCriteria("department", "Equals", filter.getDepartment());
@@ -27,9 +29,19 @@ public class AccountSpecificationBuilder {
 
         Specification<Account> where = null;
 
-        // search
         if (!StringUtils.isEmpty(search)) {
-            where = new AccountSpecification(searchCriteria);
+            search = search.trim();
+            where = new AccountSpecification(searchName);
+        }
+
+        if (!StringUtils.isEmpty(search)) {
+            search = search.trim();
+            where = where.and(new AccountSpecification(searchFirstName));
+        }
+
+        if (!StringUtils.isEmpty(search)) {
+            search = search.trim();
+            where = where.and(new AccountSpecification(searchLastName));
         }
 
         // filer by role or department

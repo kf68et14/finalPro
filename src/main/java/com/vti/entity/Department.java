@@ -15,18 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = "Department")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Department implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -54,6 +50,11 @@ public class Department implements Serializable {
 
 	@OneToMany(mappedBy = "department")
 	private List<Account> accounts;
+
+	public Department(String name, Type type){
+		this.name = name;
+		this.type = type;
+	}
 
 	public enum Type {
 		DEV("Dev"), TEST("Test"), ScrumMaster("ScrumMaster"), PM("PM");

@@ -61,10 +61,10 @@ public class AccountController {
 		return new ResponseEntity<String>("Update successfully!", HttpStatus.OK);
 	}
 
-	// update partial information
+	// update partial information by id
 	@PatchMapping(value = "/{id}")
 	public ResponseEntity<?> updateAccountPartially (@PathVariable(name = "id") int id,
-													 Map<String, Object> fields){
+													@RequestBody Map<String, Object> fields){
 		service.updateAccountPartially(id, fields);
 		return new ResponseEntity<String>("update successfully", HttpStatus.OK);
 	}
