@@ -13,6 +13,7 @@ import java.util.Map;
 
 public interface IAccountService {
     Page<Account> getAllAccounts(String search, Pageable page, AccountFilterForm filterForm);
+    List<Account> getAllAccountsV2();
 
     Account getAccountByID(int id);
 

@@ -30,13 +30,17 @@ public class AccountService implements IAccountService {
 		return repository.findAll(specification.build(), pageable);
 	}
 
+	public List<Account> getAllAccountsV2() {
+		return repository.findAll();
+	}
+
 	@Override
 	public Account getAccountByID(int id) {
 		return repository.findById(id).get();
 	}
 
 	public void createAccount(AccountRequestFormForCreate form) {
-		repository.save(form.toEntity());
+
 	}
 
 	public void updateAccountPartially(int id, Map<String, Object> fields) {
@@ -61,7 +65,7 @@ public class AccountService implements IAccountService {
 			account.get().setFirstName(form.getFirstName());
 			account.get().setLastName(form.getLastName());
 			account.get().setRole(form.getRole());
-			account.get().setDepartment(form.getDepartment());
+//			account.get().setDepartment(form.getDepartment());
 		}
 		repository.save(account.get());
 	}

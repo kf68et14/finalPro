@@ -37,7 +37,7 @@ public class DepartmentService implements IDepartmentService {
 
 	@Override
 	public void addAccountToDepartment(Account account, Department department) {
-		department.getAccounts().add(account);
+//		department.getAccounts().add(account);
 	}
 
 	@Override

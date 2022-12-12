@@ -1,5 +1,6 @@
 package com.vti.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ import com.vti.service.IAccountService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "api/v1/accounts")
+	@RequestMapping(value = "api/v1/accounts")
 public class AccountController {
 
 	@Autowired
@@ -36,9 +37,20 @@ public class AccountController {
 			@RequestParam(value = "search", required = false) String search,
 			Pageable pageable,
 			AccountFilterForm filterForm) {
-		Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
-		
-		List<AccountResponseDTO> dtos = modelMapper.map(accounts, new TypeToken<List<AccountResponseDTO>>() {}.getType());
+//		Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+		List<Account> accounts2 = service.getAllAccountsV2();
+		List<AccountResponseDTO> dtos = new LinkedList<>();
+
+		accounts2.forEach( entity -> {
+
+			AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
+			accountResponseDTO.setUsername(entity.getUsername());
+			accountResponseDTO.setDepartmentName(entity.getDepartment().getName());
+			accountResponseDTO.setId(entity.getId());
+			dtos.add(accountResponseDTO);
+		});
+
+//		List<AccountResponseDTO> dtos = modelMapper.map(accounts, new TypeToken<List<AccountResponseDTO>>() {}.getType());
 
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}

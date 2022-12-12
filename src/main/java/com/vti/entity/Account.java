@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "`Account`")
+@Table(name = "Account")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +31,7 @@ public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "AccountID")
+	@Column(name = "id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -53,7 +53,7 @@ public class Account implements Serializable {
 	private Role role;
 
 	@ManyToOne
-	@JoinColumn(name = "DepartmentID", nullable = false)
+	@JoinColumn(name = "Department_ID", nullable = false)
 	private Department department;
 	
 	@Column(name = "CreateDate")
@@ -61,12 +61,5 @@ public class Account implements Serializable {
 	@CreationTimestamp
 	private Date createdDate;
 
-	public Account(String username, String firstName, String lastName, Role role, Department department){
-		this.username = username;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
-		this.department = department;
-	}
 	
 }

@@ -21,7 +21,7 @@ public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "DepartmentID")
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -31,17 +31,17 @@ public class Department implements Serializable {
     private String name;
 
     @Column(name = "TotalMember")
-    @Formula("select count(DepartmentID) from Account where Account.DepartmentID = Department.DepartmentID")
+//    @Formula("select count(DepartmentID) from Account where Account.DepartmentID = Department.id")
     private int totalMember;
 
-    @Column(name = "`Type`", nullable = false)
+    @Column(name = "Type", nullable = false)
     @Convert(converter = DepartmentTypeConvert.class)
     private Type type;
 
-    @Column(name = "CreateDate")
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date createdDate;
+//    @Column(name = "CreateDate")
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @CreationTimestamp
+//    private Date createdDate;
 
     @OneToMany(mappedBy = "department")
     private List<Account> accounts;
