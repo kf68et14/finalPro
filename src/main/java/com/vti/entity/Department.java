@@ -1,50 +1,40 @@
 package com.vti.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "Department")
-@Data
+@Setter @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "DepartmentID")
     @Id
+    @Column(name = "DepartmentID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "DepartmentName", length = 50, unique = true)
+    @Column(name = "DepartmentName")
     @NonNull
     private String name;
 
-    @Column(name = "TotalMember")
-    @Formula("select count(DepartmentID) from Account where Account.DepartmentID = Department.DepartmentID")
-    private int totalMember;
-
-    @Column(name = "`Type`", nullable = false)
-    @Convert(converter = DepartmentTypeConvert.class)
-    private Type type;
-
-    @Column(name = "CreateDate")
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date createdDate;
-
     @OneToMany(mappedBy = "department")
     private List<Account> accounts;
+
+    @Column(name = "Type")
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     public Department(String name, Type type) {
         this.name = name;
@@ -52,27 +42,7 @@ public class Department implements Serializable {
     }
 
     public enum Type {
-        DEV("Dev"), TEST("Test"), ScrumMaster("ScrumMaster"), PM("PM");
-
-        private String value;
-
-        private Type(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public static Type toEnum(String sqlValue) {
-            for (Type type : Type.values()) {
-                if (type.getValue().equals(sqlValue)) {
-                    return type;
-                }
-            }
-            return null;
-        }
-
+        Dev, Test, ScrumMaster, PM
     }
 
 }

@@ -61,7 +61,6 @@ public class AccountService implements IAccountService {
 			account.get().setFirstName(form.getFirstName());
 			account.get().setLastName(form.getLastName());
 			account.get().setRole(form.getRole());
-			account.get().setDepartment(form.getDepartment());
 		}
 		repository.save(account.get());
 	}

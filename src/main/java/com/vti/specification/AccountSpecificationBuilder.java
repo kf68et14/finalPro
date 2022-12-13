@@ -29,17 +29,17 @@ public class AccountSpecificationBuilder {
 
         Specification<Account> where = null;
 
-        if (!StringUtils.isEmpty(search)) {
+        if (search != null && !search.isEmpty()) {
             search = search.trim();
             where = new AccountSpecification(searchName);
         }
 
-        if (!StringUtils.isEmpty(search)) {
+        if (search != null && !search.isEmpty()) {
             search = search.trim();
             where = where.and(new AccountSpecification(searchFirstName));
         }
 
-        if (!StringUtils.isEmpty(search)) {
+        if (search != null && !search.isEmpty()) {
             search = search.trim();
             where = where.and(new AccountSpecification(searchLastName));
         }

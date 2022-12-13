@@ -48,12 +48,6 @@ public class DepartmentController {
 		return new ResponseEntity<String>("Create successfully", HttpStatus.CREATED);
 	}
 
-	// add account to Department
-	public ResponseEntity<?> addAccountToDepartment(Account account, Department department){
-		service.addAccountToDepartment(account, department);
-		return new ResponseEntity<String>("add successfully", HttpStatus.OK);
-	}
-
 	@PutMapping(value = "/{id}")
 	// update department
 	public ResponseEntity<?> updateDepartment(@PathVariable int id,@RequestBody @Valid DepartmentRequestFormForUpdate form){
@@ -62,7 +56,7 @@ public class DepartmentController {
 	}
 
 	// delete
-	@DeleteMapping(value = "/delete/{id}")
+	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> deleteDepartment(@PathVariable int id){
 		service.deleteDepartment(id);
 		return new ResponseEntity<String>("delete successfully", HttpStatus.ACCEPTED);

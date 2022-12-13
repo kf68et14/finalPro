@@ -1,8 +1,6 @@
 package com.vti.form;
 
 import com.vti.entity.Account;
-import com.vti.entity.Department;
-import com.vti.entity.Role;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -18,12 +16,10 @@ public class AccountRequestFormForCreate {
     private String lastName;
 
     @Pattern(regexp = "USER|MANAGER|ADMIN", message = "the role must be USER, MANAGER or ADMIN")
-    private Role role;
-
-    private Department department;
+    private Account.Role role;
 
     public Account toEntity(){
-        return new Account(username, firstName, lastName, role, department);
+        return new Account(username, firstName, lastName, role);
     }
 
 

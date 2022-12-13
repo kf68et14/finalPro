@@ -36,11 +36,6 @@ public class DepartmentService implements IDepartmentService {
 	}
 
 	@Override
-	public void addAccountToDepartment(Account account, Department department) {
-		department.getAccounts().add(account);
-	}
-
-	@Override
 	public void updateDepartment(int id, DepartmentRequestFormForUpdate form) {
 		Optional<Department> department = repository.findById(id);
 		if (department.isPresent()){
