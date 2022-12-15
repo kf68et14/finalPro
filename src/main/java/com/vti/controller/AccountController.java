@@ -34,18 +34,26 @@ public class AccountController {
 	@Autowired
 	private IAccountService service;
 
+	// Phần specification và filter sai
+//		public ResponseEntity<List<AccountResponseDTO>>  getAllAccounts
+//		(@RequestParam(value = "search", required = false) String search,
+//				Pageable pageable, AccountFilterForm filterForm)
+//			Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+//		Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+//		List<AccountResponseDTO> dtos = accounts
+//			.stream()
+//			.map(account -> modelMapper.map(account, AccountResponseDTO.class))
+//			.collect(Collectors.toList());
+//			return ResponseEntity<>(dtos, HttpStatus.OK);
 	// OK roi
 	@GetMapping()
-	public ResponseEntity<List<AccountResponseDTO>>  getAllAccounts(
+	public ResponseEntity<Page<AccountResponseDTO>>  getAllAccounts(
 			@RequestParam(value = "search", required = false) String search,
-			Pageable pageable,
-			AccountFilterForm filterForm) {
-		Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
-		List<AccountResponseDTO> dtos = accounts
-				.stream()
-				.map(account -> modelMapper.map(account, AccountResponseDTO.class))
-				.collect(Collectors.toList());
-		return new ResponseEntity<>(dtos, HttpStatus.OK);
+			Pageable pageable) {
+		Page<Account> accounts = service.getAllAccounts(search, pageable);
+		Page<AccountResponseDTO> result = accounts.map(account ->
+			modelMapper.map(account, AccountResponseDTO.class));
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	// OK roi
@@ -58,16 +66,17 @@ public class AccountController {
 	@PostMapping
 	public ResponseEntity<?> createAccount(@RequestBody  AccountRequestFormForCreate form) {
 		service.createAccount(form);
-		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
+		return new ResponseEntity<>("Create successfully!", HttpStatus.OK);
 	}
 
 
 
 	// update by id
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id, @RequestBody @Valid AccountRequestFormForUpdate form) {
+	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") int id,
+										   @RequestBody @Valid AccountRequestFormForUpdate form) {
 		service.updateAccount(id, form);
-		return new ResponseEntity<String>("Update successfully!", HttpStatus.OK);
+		return new ResponseEntity<>("Update successfully!", HttpStatus.OK);
 	}
 
 	// update partial information by id

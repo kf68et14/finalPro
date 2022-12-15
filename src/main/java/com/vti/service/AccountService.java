@@ -2,6 +2,7 @@ package com.vti.service;
 
 import com.vti.dto.AccountResponseDTO;
 import com.vti.entity.Account;
+import com.vti.entity.Department;
 import com.vti.form.AccountFilterForm;
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AccountService implements IAccountService {
 
 	@Autowired
@@ -30,10 +32,14 @@ public class AccountService implements IAccountService {
 	@Autowired
 	private IAccountRepository repository;
 
-	public Page<Account> getAllAccounts(String search, Pageable pageable, AccountFilterForm filterForm) {
-		AccountSpecificationBuilder specification = new AccountSpecificationBuilder(filterForm, search);
+//	public Page<Account> getAllAccounts(String search, Pageable pageable, AccountFilterForm filterForm) {
+	//		AccountSpecificationBuilder specification = new AccountSpecificationBuilder(filterForm, search);
 
-		return repository.findAll(specification.build(), pageable);
+	//		return repository.findAll(specification.build(), pageable);
+
+	@Override
+	public Page<Account> getAllAccounts(String search, Pageable page) {
+		return repository.findAll(page);
 	}
 
 	@Override
@@ -52,15 +58,25 @@ public class AccountService implements IAccountService {
 	}
 
 	public void createAccount(AccountRequestFormForCreate form) {
-		this.modelMapper.getConfiguration().setSkipNullEnabled(true);
-		TypeMap<Account, AccountRequestFormForCreate> propertyMapper
-				= this.modelMapper.createTypeMap(Account.class, AccountRequestFormForCreate.class);
-		propertyMapper.addMappings(mapper ->
-				mapper.map(account -> account.getDepartment().getId(),
-							AccountRequestFormForCreate::setDepartmentId));
-		Account account = this.modelMapper.map(form, Account.class);
+		// this.modelMapper.getConfiguration().setSkipNullEnabled(true);
+//		TypeMap<Account, AccountRequestFormForCreate> propertyMapper
+//				= this.modelMapper.createTypeMap(Account.class, AccountRequestFormForCreate.class);
+//		propertyMapper.addMappings(mapper ->
+//				mapper.map(account -> account.getDepartment().getId(),
+//							AccountRequestFormForCreate::setDepartmentId));
+//		Account account = this.modelMapper.map(form, Account.class);
+   		Account account = new Account();
+		   account.setUsername(form.getUsername());
+		   account.setFirstName(form.getFirstName());
+		   account.setLastName(form.getLastName());
+		   account.setRole(form.getRole());
 
-		repository.save(account);
+		   Department department = new Department();
+		   department.setId(form.getDepartmentId());
+		   account.setDepartment(department);
+
+			repository.save(account);
+		System.out.println("Dataa" + account);
 	}
 
 	public void updateAccountPartially(int id, Map<String, Object> fields) {
@@ -85,12 +101,14 @@ public class AccountService implements IAccountService {
 			account.get().setFirstName(form.getFirstName());
 			account.get().setLastName(form.getLastName());
 			account.get().setRole(form.getRole());
-//			account.get().setDepartment(form.getDepartment());
+			Department department = new Department();
+			department.setId(form.getDepartmentId());
+			account.get().setDepartment(department);
 		}
 		repository.save(account.get());
 	}
 
-	@Transactional
+//	@Transactional
 	public void deleteAccounts(List<Integer> ids){
 		repository.deleteByIdIn(ids);
 	}

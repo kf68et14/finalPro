@@ -5,6 +5,7 @@ import com.vti.entity.Department;
 import com.vti.entity.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -24,7 +25,7 @@ public class AccountRequestFormForUpdate {
    // @Pattern(regexp = "USER|MANAGER|ADMIN", message = "the role must be USER, MANAGER or ADMIN")
     private Role role;
 
-    private Department department;
+    private int departmentId;
 
 //    public Account toEntity(){
 //        return new Account(username, firstName, lastName, role, department);
