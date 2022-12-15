@@ -1,17 +1,21 @@
 package com.vti.service;
 
+import com.vti.dto.AccountResponseDTO;
 import com.vti.entity.Account;
 import com.vti.form.AccountFilterForm;
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
 import com.vti.repository.IAccountRepository;
 import com.vti.specification.AccountSpecificationBuilder;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import javax.security.auth.login.AccountNotFoundException;
 import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -22,6 +26,8 @@ import java.util.Optional;
 public class AccountService implements IAccountService {
 
 	@Autowired
+	private ModelMapper modelMapper;
+	@Autowired
 	private IAccountRepository repository;
 
 	public Page<Account> getAllAccounts(String search, Pageable pageable, AccountFilterForm filterForm) {
@@ -30,17 +36,31 @@ public class AccountService implements IAccountService {
 		return repository.findAll(specification.build(), pageable);
 	}
 
-	public List<Account> getAllAccountsV2() {
-		return repository.findAll();
-	}
-
 	@Override
-	public Account getAccountByID(int id) {
-		return repository.findById(id).get();
+	public AccountResponseDTO getAccountByID(int id) throws AccountNotFoundException {
+		Optional<Account> account = repository.findById(id);
+		if (!account.isPresent()){
+			throw new AccountNotFoundException("account not exists");
+		}
+		AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
+		accountResponseDTO.setId(id);
+		accountResponseDTO.setUsername(account.get().getUsername());
+		accountResponseDTO.setDepartmentName(account.get().getDepartment().getName());
+
+		return accountResponseDTO;
+
 	}
 
 	public void createAccount(AccountRequestFormForCreate form) {
+		this.modelMapper.getConfiguration().setSkipNullEnabled(true);
+		TypeMap<Account, AccountRequestFormForCreate> propertyMapper
+				= this.modelMapper.createTypeMap(Account.class, AccountRequestFormForCreate.class);
+		propertyMapper.addMappings(mapper ->
+				mapper.map(account -> account.getDepartment().getId(),
+							AccountRequestFormForCreate::setDepartmentId));
+		Account account = this.modelMapper.map(form, Account.class);
 
+		repository.save(account);
 	}
 
 	public void updateAccountPartially(int id, Map<String, Object> fields) {

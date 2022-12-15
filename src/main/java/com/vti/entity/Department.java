@@ -31,17 +31,11 @@ public class Department implements Serializable {
     private String name;
 
     @Column(name = "TotalMember")
-//    @Formula("select count(DepartmentID) from Account where Account.DepartmentID = Department.id")
     private int totalMember;
 
     @Column(name = "Type", nullable = false)
     @Convert(converter = DepartmentTypeConvert.class)
     private Type type;
-
-//    @Column(name = "CreateDate")
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @CreationTimestamp
-//    private Date createdDate;
 
     @OneToMany(mappedBy = "department")
     private List<Account> accounts;

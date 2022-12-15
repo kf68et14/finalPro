@@ -12,16 +12,16 @@ import javax.validation.constraints.Pattern;
 @Data
 @NoArgsConstructor
 public class AccountRequestFormForUpdate {
-    @NotBlank(message = "username must not be null")
+    //@NotBlank(message = "username must not be null")
     private String username;
 
-    @NotBlank(message = "firstname must not be null")
+    //@NotBlank(message = "firstname must not be null")
     private String firstName;
 
-    @NotBlank(message = "lastname must not be null")
+    //@NotBlank(message = "lastname must not be null")
     private String lastName;
 
-    @Pattern(regexp = "USER|MANAGER|ADMIN", message = "the role must be USER, MANAGER or ADMIN")
+   // @Pattern(regexp = "USER|MANAGER|ADMIN", message = "the role must be USER, MANAGER or ADMIN")
     private Role role;
 
     private Department department;

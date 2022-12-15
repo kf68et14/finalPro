@@ -3,6 +3,7 @@ package com.vti.controller;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
@@ -20,6 +21,7 @@ import com.vti.entity.Account;
 import com.vti.form.AccountFilterForm;
 import com.vti.service.IAccountService;
 
+import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 
 @RestController
@@ -32,39 +34,34 @@ public class AccountController {
 	@Autowired
 	private IAccountService service;
 
+	// OK roi
 	@GetMapping()
 	public ResponseEntity<List<AccountResponseDTO>>  getAllAccounts(
 			@RequestParam(value = "search", required = false) String search,
 			Pageable pageable,
 			AccountFilterForm filterForm) {
-//		Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
-		List<Account> accounts2 = service.getAllAccountsV2();
-		List<AccountResponseDTO> dtos = new LinkedList<>();
-
-		accounts2.forEach( entity -> {
-
-			AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
-			accountResponseDTO.setUsername(entity.getUsername());
-			accountResponseDTO.setDepartmentName(entity.getDepartment().getName());
-			accountResponseDTO.setId(entity.getId());
-			dtos.add(accountResponseDTO);
-		});
-
-//		List<AccountResponseDTO> dtos = modelMapper.map(accounts, new TypeToken<List<AccountResponseDTO>>() {}.getType());
-
+		Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+		List<AccountResponseDTO> dtos = accounts
+				.stream()
+				.map(account -> modelMapper.map(account, AccountResponseDTO.class))
+				.collect(Collectors.toList());
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
+
+	// OK roi
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getAccountByID(@PathVariable(name = "id") int id) throws AccountNotFoundException {
+		return new ResponseEntity<>(service.getAccountByID(id), HttpStatus.OK);
+	}
+
 	// Create account
 	@PostMapping
-	public ResponseEntity<?> createAccount(@RequestBody @Valid AccountRequestFormForCreate form) {
+	public ResponseEntity<?> createAccount(@RequestBody  AccountRequestFormForCreate form) {
 		service.createAccount(form);
 		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<?> getAccountByID(@PathVariable(name = "id") int id) {
-		return new ResponseEntity<>(service.getAccountByID(id), HttpStatus.OK);
-	}
+
 
 	// update by id
 	@PutMapping(value = "/{id}")

@@ -1,6 +1,7 @@
 package com.vti.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.vti.entity.Account;
 import com.vti.form.DepartmentFilterForm;
@@ -37,9 +38,17 @@ public class DepartmentController {
 			Pageable pageable,
 			DepartmentFilterForm filterForm) {
 			Page<Department> departments = service.getAllDepartments(search, pageable, filterForm);
-			List<DepartmentResponseDTO> dtos = modelMapper.map(departments, new TypeToken<List<DepartmentResponseDTO>>() {}.getType());
-
+			List<DepartmentResponseDTO> dtos = departments
+					.stream()
+					.map(department -> modelMapper.map(department, DepartmentResponseDTO.class))
+					.collect(Collectors.toList());
 			return new ResponseEntity<>(dtos, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> getDepartmentById(@RequestParam int id){
+		Department department = service.getDepartmentByID(id);
+		return new ResponseEntity<String>("get successfull", HttpStatus.OK);
 	}
 
 	@PostMapping
