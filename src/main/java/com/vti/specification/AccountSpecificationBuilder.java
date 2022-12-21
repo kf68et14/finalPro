@@ -11,21 +11,19 @@ public class AccountSpecificationBuilder {
 
     private String search;
 
-    public AccountSpecificationBuilder(AccountFilterForm filter, String search){
-        this.filter = filter;
+    public AccountSpecificationBuilder(String search, AccountFilterForm filter){
         this.search = search;
+        this.filter = filter;
     }
 
     @SuppressWarnings("deprecation")
     public Specification<Account> build() {
-
         SearchCriteria searchName = new SearchCriteria("username","Like", search);
-        SearchCriteria searchFirstName = new SearchCriteria("firstname","Like", search);
-        SearchCriteria searchLastName = new SearchCriteria("lastname","Like", search);
+        SearchCriteria searchFirstName = new SearchCriteria("firstName","Like", search);
+        SearchCriteria searchLastName = new SearchCriteria("lastName","Like", search);
 
         SearchCriteria getRoleCriteria = new SearchCriteria("role", "Equals", filter.getRole());
-        SearchCriteria getDepartmentCriteria = new SearchCriteria("department", "Equals", filter.getDepartment());
-
+        SearchCriteria getDepartmentCriteria = new SearchCriteria("departmentName", "Equals", filter.getDepartmentName());
 
         Specification<Account> where = null;
 
@@ -36,12 +34,12 @@ public class AccountSpecificationBuilder {
 
         if (!StringUtils.isEmpty(search)) {
             search = search.trim();
-            where = where.and(new AccountSpecification(searchFirstName));
+            where = where.or(new AccountSpecification(searchFirstName));
         }
 
         if (!StringUtils.isEmpty(search)) {
             search = search.trim();
-            where = where.and(new AccountSpecification(searchLastName));
+            where = where.or(new AccountSpecification(searchLastName));
         }
 
         // filer by role or department
@@ -53,7 +51,7 @@ public class AccountSpecificationBuilder {
             }
         }
 
-        if (filter.getDepartment() != null){
+        if (filter.getDepartmentName() != null){
             if(where != null){
                 where = where.and(new AccountSpecification(getDepartmentCriteria));
             } else {

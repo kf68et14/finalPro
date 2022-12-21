@@ -30,15 +30,6 @@ public class AccountSpecification implements Specification<Account> {
         if (criteria.getOperator().equalsIgnoreCase("Equals")) {
             return criteriaBuilder.equal(root.get(criteria.getKey()), "%" + criteria.getValue() + "%");
         }
-
-        if (criteria.getOperator().equalsIgnoreCase(">=")) {
-            return criteriaBuilder.greaterThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString());
-        }
-
-        if (criteria.getOperator().equalsIgnoreCase("<=")) {
-            return criteriaBuilder.lessThanOrEqualTo(root.get(criteria.getKey()), criteria.getValue().toString());
-        }
-
         return null;
     }
 }

@@ -1,7 +1,7 @@
 package com.vti.form;
 
-import com.vti.entity.Department;
 import com.vti.entity.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class AccountRequestFormForCreate {
     @NotBlank(message = "username must not be null")
     private String username;

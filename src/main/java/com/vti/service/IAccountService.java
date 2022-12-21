@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface IAccountService {
-//    Page<Account> getAllAccounts(String search, Pageable page, AccountFilterForm filterForm);
-    Page<Account> getAllAccounts(String search, Pageable page);
+
+    Page<Account> getAllAccounts (String search, Pageable page, AccountFilterForm filterForm);
 
 
-    AccountResponseDTO getAccountByID(int id) throws AccountNotFoundException;
+    AccountResponseDTO getAccountByID(int id);
 
     void updateAccount(int id, AccountRequestFormForUpdate form);
     void updateAccountPartially(int id, Map<String, Object> fields);

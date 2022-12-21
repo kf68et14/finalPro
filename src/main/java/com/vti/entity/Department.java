@@ -37,7 +37,7 @@ public class Department implements Serializable {
     @Convert(converter = DepartmentTypeConvert.class)
     private Type type;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)//
     private List<Account> accounts;
 
     public Department(String name, Type type) {
