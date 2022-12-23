@@ -9,7 +9,6 @@ import com.vti.form.AccountRequestFormForUpdate;
 import com.vti.repository.IAccountRepository;
 import com.vti.specification.AccountSpecificationBuilder;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import javax.security.auth.login.AccountNotFoundException;
-import javax.sql.RowSet;
 import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -39,17 +37,17 @@ public class AccountService implements IAccountService {
 		return repository.findAll(specification.build(), pageable);
 	}
 
-	public void updateAccountPartially(int id, Map<String, Object> fields) {
+	public void updateAccountPartially(int id, Map<String, Object> fields) throws AccountNotFoundException {
 		Optional<Account> account = repository.findById(id);
-
-		if (account.isPresent()) {
+		if (!isAccountExitById(id)){
+			throw new AccountNotFoundException("account not found");
+		} else {
 			fields.forEach((key, value) -> {
 				Field field = ReflectionUtils.findField(Account.class, key);
 				field.setAccessible(true);
 				ReflectionUtils.setField(field, account.get(), value);
 			});
 		}
-
 		repository.save(account.get());
 	}
 
@@ -68,21 +66,31 @@ public class AccountService implements IAccountService {
 		repository.save(account.get());
 	}
 
-	public void deleteAccounts(List<Integer> ids) {
+	public void deleteAccounts(List<Integer> ids) throws AccountNotFoundException {
+		ids.forEach(id -> {
+			if(isAccountExitById(id))
+				try {
+					throw new AccountNotFoundException("Account not found");
+				} catch (AccountNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+		});
 		repository.deleteByIdIn(ids);
 	}
 
 	@Override
-	public AccountResponseDTO getAccountByID(int id) {
-		Optional<Account> account = repository.findById(id);
-		if (account.isPresent()) {
+	public AccountResponseDTO getAccountByID(int id) throws AccountNotFoundException {
+		if (isAccountExitById(id)){
+			Optional<Account> account = repository.findById(id);
 			AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
 			accountResponseDTO.setId(id);
 			accountResponseDTO.setUsername(account.get().getUsername());
 			accountResponseDTO.setDepartmentName(account.get().getDepartment().getName());
 			return accountResponseDTO;
+			}
+		else {
+			throw new AccountNotFoundException("account not exist");
 		}
-		return null;
 	}
 
 	@Override
@@ -99,5 +107,24 @@ public class AccountService implements IAccountService {
 
 		repository.save(account);
 	}
+
+	@Override
+	public void deleteById(int id) throws AccountNotFoundException {
+		if(isAccountExitById(id)){
+			repository.deleteById(id);
+
+		}
+		else {
+			throw new AccountNotFoundException("account not exist");
+		}
+	}
+
+	@Override
+	public boolean isAccountExitById(int id) {
+		Optional<Account> account = repository.findById(id);
+		return account.isPresent();
+	}
+
+
 }
 
