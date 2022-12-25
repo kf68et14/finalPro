@@ -1,4 +1,4 @@
-package com.vti.config;
+package com.vti.config.exeptionhandler;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

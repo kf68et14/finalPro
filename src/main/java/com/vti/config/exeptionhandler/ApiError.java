@@ -1,4 +1,4 @@
-package com.vti.config;
+package com.vti.config.exeptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

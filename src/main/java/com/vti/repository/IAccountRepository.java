@@ -10,5 +10,7 @@ import java.util.List;
 public interface IAccountRepository extends JpaRepository<Account, Integer>, JpaSpecificationExecutor<Account> {
     void deleteByIdIn(List<Integer> ids);
 
+    Account findByUsername(String username);
+
     // Account findByUsername(String uss);
 }

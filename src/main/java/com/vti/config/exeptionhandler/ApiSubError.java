@@ -1,4 +1,4 @@
-package com.vti.config;
+package com.vti.config.exeptionhandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
