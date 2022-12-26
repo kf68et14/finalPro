@@ -3,20 +3,10 @@ package com.vti.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vti.converter.RoleConverter;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -49,7 +39,7 @@ public class Account implements Serializable {
 	private String password;
 	
 	@Column(name = "Role", nullable = true)
-	@Enumerated(EnumType.STRING)	
+	@Convert(converter = RoleConverter.class)
 	private Role role;
 
 	@ManyToOne

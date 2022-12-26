@@ -14,7 +14,12 @@ import java.util.Map;
 
 public interface IAccountService {
 
+<<<<<<< HEAD
     Page<Account> getAllAccounts (String search, Pageable page, Role role);
+=======
+//    Page<Account> getAllAccounts (String search, Pageable page, AccountFilterForm filterForm);
+    Page<Account> getAllAccountsV2 (String search, Pageable page);
+>>>>>>> 46c32aff8e1dec8f31553e12da8bf8eb31012b41
 
 
     AccountResponseDTO getAccountByID(int id) throws AccountNotFoundException;

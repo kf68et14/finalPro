@@ -39,7 +39,12 @@ public class AccountController {
                                             Pageable pageable,
                                             @RequestParam(value = "role", required = false) Role role) {
 
+<<<<<<< HEAD
         Page<Account> accounts = service.getAllAccounts(search, pageable, role);
+=======
+//        Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+        Page<Account> accounts = service.getAllAccountsV2(search, pageable);
+>>>>>>> 46c32aff8e1dec8f31553e12da8bf8eb31012b41
         Page<AccountResponseDTO> result = accounts.map(account ->
                 modelMapper.map(account, AccountResponseDTO.class));
         return new ResponseEntity<>(result, HttpStatus.OK);
