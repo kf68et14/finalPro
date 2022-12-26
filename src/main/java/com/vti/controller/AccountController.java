@@ -36,7 +36,8 @@ public class AccountController {
     public ResponseEntity<?> getAllAccounts(@RequestParam(value = "search", required = false) String search,
                                             Pageable pageable, AccountFilterForm filterForm) {
 
-        Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+//        Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+        Page<Account> accounts = service.getAllAccountsV2(search, pageable);
         Page<AccountResponseDTO> result = accounts.map(account ->
                 modelMapper.map(account, AccountResponseDTO.class));
         return new ResponseEntity<>(result, HttpStatus.OK);

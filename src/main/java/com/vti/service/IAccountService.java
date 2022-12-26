@@ -14,7 +14,8 @@ import java.util.Map;
 
 public interface IAccountService {
 
-    Page<Account> getAllAccounts (String search, Pageable page, AccountFilterForm filterForm);
+//    Page<Account> getAllAccounts (String search, Pageable page, AccountFilterForm filterForm);
+    Page<Account> getAllAccountsV2 (String search, Pageable page);
 
 
     AccountResponseDTO getAccountByID(int id);

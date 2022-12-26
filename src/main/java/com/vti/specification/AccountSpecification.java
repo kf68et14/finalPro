@@ -28,7 +28,7 @@ public class AccountSpecification implements Specification<Account> {
         }
 
         if (criteria.getOperator().equalsIgnoreCase("Equals")) {
-            return criteriaBuilder.equal(root.get(criteria.getKey()), "%" + criteria.getValue() + "%");
+            return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
         }
         return null;
     }
