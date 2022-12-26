@@ -3,7 +3,7 @@ package com.vti.service;
 import com.vti.dto.AccountResponseDTO;
 import com.vti.entity.Account;
 import com.vti.entity.Department;
-import com.vti.form.AccountFilterForm;
+import com.vti.entity.Role;
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
 import com.vti.repository.IAccountRepository;
@@ -12,10 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -35,8 +31,8 @@ public class AccountService implements IAccountService {
 	@Autowired
 	private IAccountRepository repository;
 
-	public Page<Account> getAllAccounts(String search, Pageable pageable, AccountFilterForm filterForm) {
-		AccountSpecificationBuilder specification = new AccountSpecificationBuilder(search, filterForm);
+	public Page<Account> getAllAccounts(String search, Pageable pageable, Role role) {
+		AccountSpecificationBuilder specification = new AccountSpecificationBuilder(search, role);
 
 		return repository.findAll(specification.build(), pageable);
 	}

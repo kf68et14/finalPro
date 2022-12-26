@@ -1,6 +1,5 @@
 package com.vti.form;
 
-import com.vti.entity.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountFilterForm {
 
-	private String role;
+    private String role;
 
-	private String departmentName;
+    private String departmentName;
 }
 

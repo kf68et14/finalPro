@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import com.vti.entity.Role;
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
 import org.modelmapper.ModelMapper;
@@ -35,9 +36,10 @@ public class AccountController {
 
     @GetMapping
     public ResponseEntity<?> getAllAccounts(@RequestParam(value = "search", required = false) String search,
-                                            Pageable pageable, AccountFilterForm filterForm) {
+                                            Pageable pageable,
+                                            @RequestParam(value = "role", required = false) Role role) {
 
-        Page<Account> accounts = service.getAllAccounts(search, pageable, filterForm);
+        Page<Account> accounts = service.getAllAccounts(search, pageable, role);
         Page<AccountResponseDTO> result = accounts.map(account ->
                 modelMapper.map(account, AccountResponseDTO.class));
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -2,7 +2,7 @@ package com.vti.service;
 
 import com.vti.dto.AccountResponseDTO;
 import com.vti.entity.Account;
-import com.vti.form.AccountFilterForm;
+import com.vti.entity.Role;
 import com.vti.form.AccountRequestFormForCreate;
 import com.vti.form.AccountRequestFormForUpdate;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface IAccountService {
 
-    Page<Account> getAllAccounts (String search, Pageable page, AccountFilterForm filterForm);
+    Page<Account> getAllAccounts (String search, Pageable page, Role role);
 
 
     AccountResponseDTO getAccountByID(int id) throws AccountNotFoundException;
