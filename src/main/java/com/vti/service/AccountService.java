@@ -12,17 +12,19 @@ import com.vti.specification.AccountSpecification;
 import com.vti.specification.AccountSpecificationBuilder;
 import com.vti.specification.SearchCriteria;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.security.auth.login.AccountNotFoundException;
-import javax.sql.RowSet;
 import javax.transaction.Transactional;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -112,7 +114,6 @@ public class AccountService implements IAccountService {
 				ReflectionUtils.setField(field, account.get(), value);
 			});
 		}
-
 		repository.save(account.get());
 	}
 
@@ -162,5 +163,34 @@ public class AccountService implements IAccountService {
 
 		repository.save(account);
 	}
+
+	@Override
+	public void deleteById(int id) throws AccountNotFoundException {
+		if(isAccountExitById(id)){
+			repository.deleteById(id);
+
+		}
+		else {
+			throw new AccountNotFoundException("account not exist");
+		}
+	}
+
+	@Override
+	public boolean isAccountExitById(int id) {
+		Optional<Account> account = repository.findById(id);
+		return account.isPresent();
+	}
+
+
+//	@Override
+//	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//		Account account = repository.findByUsername(username);
+//		if (account == null){
+//			throw new UsernameNotFoundException("can not found this account");
+//		}
+//			return new Account(account.getUsername(), account.getPassword(),
+//					AuthorityUtils.createAuthorityList("USER"));
+//		}
+//	}
 }
 

@@ -18,12 +18,16 @@ public interface IAccountService {
     Page<Account> getAllAccountsV2 (String search, Pageable page);
 
 
-    AccountResponseDTO getAccountByID(int id);
+    AccountResponseDTO getAccountByID(int id) throws AccountNotFoundException;
 
     void updateAccount(int id, AccountRequestFormForUpdate form);
-    void updateAccountPartially(int id, Map<String, Object> fields);
+    void updateAccountPartially(int id, Map<String, Object> fields) throws AccountNotFoundException;
 
-    void deleteAccounts(List<Integer> ids);
+    void deleteAccounts(List<Integer> ids) throws AccountNotFoundException;
 
     void createAccount(AccountRequestFormForCreate form);
+
+    void deleteById(int id) throws AccountNotFoundException;
+
+    boolean isAccountExitById(int id);
 }

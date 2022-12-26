@@ -20,6 +20,7 @@ import com.vti.form.AccountFilterForm;
 import com.vti.service.IAccountService;
 
 
+import javax.security.auth.login.AccountNotFoundException;
 import javax.validation.Valid;
 
 @RestController
@@ -44,11 +45,10 @@ public class AccountController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getAccountByID(@PathVariable(name = "id") int id) {
+    public ResponseEntity<?> getAccountByID(@PathVariable(name = "id") int id) throws AccountNotFoundException {
         return new ResponseEntity<>(service.getAccountByID(id), HttpStatus.OK);
     }
 
-    // Create account
     @PostMapping
     public ResponseEntity<?> createAccount(@RequestBody AccountRequestFormForCreate form) {
         service.createAccount(form);
@@ -64,16 +64,22 @@ public class AccountController {
     }
 
     // update partial information by id
-    @PatchMapping(value = "/{id}")
+    @PatchMapping(value = "/update/{id}")
     public ResponseEntity<?> updateAccountPartially(@PathVariable(name = "id") int id,
-                                                    @RequestBody Map<String, Object> fields) {
+                                                    @RequestBody Map<String, Object> fields) throws AccountNotFoundException{
         service.updateAccountPartially(id, fields);
         return new ResponseEntity<String>("update successfully", HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/del/{id}")
+    public ResponseEntity<?> deleteAccount(@PathVariable int id) throws AccountNotFoundException{
+        service.deleteById(id);
+        return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+    }
+
     // delete nhieu account
     @DeleteMapping
-    public ResponseEntity<?> deleteAccounts(@RequestBody List<Integer> ids) {
+    public ResponseEntity<?> deleteAccounts(@RequestBody List<Integer> ids) throws AccountNotFoundException {
         service.deleteAccounts(ids);
         return new ResponseEntity<String>("Delete successfully!", HttpStatus.OK);
     }

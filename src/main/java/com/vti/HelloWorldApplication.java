@@ -15,17 +15,17 @@ public class HelloWorldApplication {
 		SpringApplication.run(HelloWorldApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry
-					.addMapping("/**")
-					.allowedOrigins("*")
-					.allowedMethods("GET", "POST", "PUT", "DELETE");
-			}
-		};
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry
+//					.addMapping("/**")
+//					.allowedOrigins("*")
+//					.allowedMethods("GET", "POST", "PUT", "DELETE");
+//			}
+//		};
+//	}
 
 }
